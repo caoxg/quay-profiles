@@ -12,17 +12,19 @@ Quay carries a copy of this repository (taken when it was built) and fetches a n
 ## Layout
 
 ```text
-index.yaml           schema, updated, and the lists of profile files
-apps/xgoduck.yaml    XGO-Duck (Luwu Dynamics)
-systems/duck-os.yaml Duck OS (Luwu Dynamics' image for XGO-Duck)
+index.yaml                schema, updated, and the lists of profile files
+apps/xgoduck/<commit>.yaml XGO-Duck (Luwu Dynamics), one version per runtime commit it starts from
+systems/duck-os.yaml      Duck OS (Luwu Dynamics' image for XGO-Duck)
 ```
 
 `index.yaml`:
 
 ```yaml
-schema: 1              # the layout version; a Quay that reads an older schema keeps its own copy
-updated: "2026-10-25"  # bump on every change: Quay takes the copy with the later date
-apps: [apps/xgoduck.yaml]
+schema: 2              # the layout version; a Quay that reads an older schema keeps its own copy
+updated: "2026-10-31"  # bump on every change: Quay takes the copy with the later date
+apps:                  # the versions of one profile oldest first
+  - apps/xgoduck/5f1954a.yaml
+  - apps/xgoduck/5f511b9.yaml
 systems: [systems/duck-os.yaml]
 ```
 
@@ -31,6 +33,14 @@ systems: [systems/duck-os.yaml]
 ## App profiles
 
 The same format as an app's own `quay.yaml`, plus `id`, `source` (offered under **Custom** in the app) and `match` (which repositories or `app.yaml` names it is for). See [docs/quay-yaml.md](https://github.com/caoxg/quay/blob/main/docs/quay-yaml.md). An app's own `quay.yaml` always wins.
+
+### Versions
+
+An app changes: XGO-Duck's runtime had 3 policy models at first and has 8 now. So a profile comes in versions, one file per commit of the app's repository it starts from, named after it (`apps/xgoduck/5f511b9.yaml`) and saying so in `from` (the full hash). A version is for that commit and every later one, until the next version; a commit older than every version gets no profile. All versions share `id`, and `index.yaml` lists them oldest first.
+
+When the app changes something a profile describes, add a version from the commit that changed it, rather than editing the old one: apps already installed at older commits keep the version that fits them. Quay picks the version from the app's git history when it installs or updates the app, and records it on the board (`.quay.json`, `profileFrom`).
+
+Only apps installed through Quay get a profile. An app installed some other way is a plain app to Quay: the profile it matches only names where **Reinstall with Quay** comes from.
 
 ## System profiles
 

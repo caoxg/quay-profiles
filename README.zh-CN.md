@@ -12,12 +12,20 @@ Quay 自带一份这个仓库的副本（构建时拍下的），每天大约两
 ## 目录
 
 ```text
-index.yaml           格式版本、更新日期，以及配置文件列表
-apps/xgoduck.yaml    XGO-Duck（陆吾智能）
-systems/duck-os.yaml Duck OS（陆吾智能给 XGO-Duck 做的系统镜像）
+index.yaml                 格式版本、更新日期，以及配置文件列表
+apps/xgoduck/<提交>.yaml   XGO-Duck（陆吾智能），每个版本一个文件，以它起始的运行时提交命名
+systems/duck-os.yaml       Duck OS（陆吾智能给 XGO-Duck 做的系统镜像）
 ```
 
 **每次修改都要把 `index.yaml` 里的 `updated` 改成新日期**，否则已经有同一日期副本的 Quay 不会去用新的。
+
+## App 配置的版本
+
+App 会变：XGO-Duck 的运行时一开始只有 3 个策略模型，现在有 8 个。所以 App 配置按 App 仓库的提交分版本：每个版本一个文件，用它起始的提交命名（`apps/xgoduck/5f511b9.yaml`），文件里的 `from` 写完整哈希。一个版本管从这个提交起的所有提交，直到下一个版本；比所有版本都早的提交没有配置。各版本 `id` 相同，`index.yaml` 里从旧到新列出。
+
+App 改了配置里描述的东西时，从改动的那个提交起加一个新版本，不要改旧的：装在旧提交上的 App 继续用适合它的版本。Quay 在安装、更新时按 App 的 git 历史挑版本，并记在板子上（`.quay.json` 的 `profileFrom`）。
+
+只有用 Quay 装的 App 才用配置。用别的方式装的 App 对 Quay 来说是普通 App：它匹配的配置只用来告诉「用 Quay 重装」从哪里装。
 
 格式说明（App 配置和系统配置的字段、内置动作）见 [README.md](README.md)。
 
