@@ -49,6 +49,10 @@ version:                     # shown on the System card: a top-level key of a JS
 base:                        # what it is based on (shown as "based on Arduino image …")
   file: /etc/duck-release.json
   json: base_version
+hotspot:                     # the system's own hotspot, set up by its own tools: Quay shows whether
+  nm_profile:                #   it starts by itself ("Away hotspot: controlled by Duck OS, …"), since it
+    id_prefix: Duck-Setup-hotspot-   # then decides how the board is reached away from Wi-Fi
+    mode: ap
 notes:                       # what it does differently that the user should know
   - id: duck-setup-hotspot
     show_in: network         # network: the Wi-Fi and hotspot dialog; overview: the board's page
