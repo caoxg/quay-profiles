@@ -30,6 +30,11 @@ icon: |
     <circle cx="49.4" cy="15.1" r="1.4" fill="#fff"/>
   </svg>
 folder: xgoduck_runtime_arduino
+# What the runtime's own App Lab ZIP leaves out (tools/package-ai-app.py): the 69 MB assembly slide deck and
+# the ZIP itself (34 MB), about 100 MB that the app never reads.
+exclude:
+  - assembly/
+  - packages/
 source:
   repo: https://github.com/LuwuDynamics/xgoduck_runtime_arduino
 match:

@@ -20,8 +20,8 @@ systems/duck-os.yaml      Duck OS (Luwu Dynamics' image for XGO-Duck)
 `index.yaml`:
 
 ```yaml
-schema: 2              # the layout version; a Quay that reads an older schema keeps its own copy
-updated: "2026-10-31"  # bump on every change: Quay takes the copy with the later date
+schema: 3              # the layout version; a Quay that reads an older schema keeps its own copy
+updated: "2026-11-17"  # bump on every change: Quay takes the copy with the later date
 apps:                  # the versions of one profile oldest first
   - apps/xgoduck/5f1954a.yaml
   - apps/xgoduck/5f511b9.yaml
@@ -29,6 +29,8 @@ systems: [systems/duck-os.yaml]
 ```
 
 **Bump `updated` with every change**, or Quays that already have a copy of the same date will not take it.
+
+Bump `schema` when a profile uses a key older Quays do not know (they reject unknown keys): 2 brought versions (`from`), Quay 0.2.3; 3 brought `exclude`, Quay 0.2.4.
 
 ## App profiles
 
